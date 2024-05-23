@@ -62,11 +62,10 @@ with col1:
                 """,
                 unsafe_allow_html=True,
             )
+            st.write(f"**{label}**")
             cols = st.columns([1, 2, 1, 1, 1, 1, 1])
-            with cols[0]:
-                st.write(f"**{label}**")
             
-            with cols[1]:
+            with cols[0]:
                 if st.session_state.uploaded_files[key] is not None:
                     file_info = st.session_state.uploaded_files[key]
                     st.write(file_info['file_name'])
@@ -76,25 +75,25 @@ with col1:
                         # Store the fact that we are in upload mode for this key
                         st.session_state[f"upload_mode_{key}"] = True
 
-            with cols[2]:
+            with cols[1]:
                 if st.session_state.uploaded_files[key] is not None:
                     st.success("✔️ Uploaded")
                 else:
                     st.write("➕ Not Uploaded")
-            
-            with cols[3]:
+
+            with cols[2]:
                 if st.session_state.uploaded_files[key] is not None:
                     st.write(st.session_state.uploaded_files[key]['rows'])
                 else:
                     st.write("-")
-            
-            with cols[4]:
+
+            with cols[3]:
                 if st.session_state.uploaded_files[key] is not None:
                     st.write(f"{st.session_state.uploaded_files[key]['file_size'] / 1024:.2f} KB")
                 else:
                     st.write("-")
-            
-            with cols[5]:
+
+            with cols[4]:
                 if st.session_state.uploaded_files[key] is not None:
                     if st.button(f"View {label}", key=f"view_{key}"):
                         st.session_state['view_data'] = st.session_state.uploaded_files[key]['data']
