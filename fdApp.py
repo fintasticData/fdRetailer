@@ -2,13 +2,10 @@ import pickle
 from pathlib import Path
 import streamlit as st
 import pandas as pd
-from st_pages import Page, Section, add_page_title, show_pages
 from datetime import date
 
-
-st.set_page_config(page_title="Retail Forecasting Services", layout="wide")
+st.set_page_config(page_title="21 Retail Forecasting Services", layout="wide")
 st.image("fdLogo.png")
-
 
 # # --- USER AUTHENTICATION ---
 # import yaml
@@ -35,47 +32,11 @@ if authentication_status == None:
     st.warning("Please enter your username and password")
 
 if authentication_status:
-    show_pages(
-        [
-            Section(name="1. Retail ML Services", icon=""),
-            Page("fdApp.py", "1.1 About Us", " "),
-            Page("pages/1_2 Presentation.py", "1.2 The Situation", " "),
-            Page("pages/10_Cards.py", "1.3 Services", " "),
-            Page("pages/huggingface_test.py", "1.4 Huggy", " "),
-            
-            Section(name="2. The Retail Analytical Industry",  icon=""),
-            # The pages appear in the order you pass them
-            Page("pages/1_1._Highlights.py", "2.1 Highlights", " "),
-            Page("pages/3_💬_Challengest.py", "2.2 Challenges", " "),
-            Page("pages/Why Recommendations.py","2.3 Recommender Systems in Retail", " "),
-            # Since this is a Section, all the pages underneath it will be indented
-            # The section itself will look like a normal page, but it won't be clickable
-            Section(name="3. Our Company", icon=""),
-            Page("pages/4_FileUploads.py","3.0 Data Uploads", " "),
-            Page("pages/Manager.py","3.1 Manager", " "),
-            # Page("pages/11_DataUpload_Inventory.py","3.0 Upload Data", " "),
-            Page("pages/1Logistics.py","3.2 Logistics", " "),
-
-            Page("pages/4_Inventory Analytics.py", "3.2 Inventory Analytics", " "),
-            Page("pages/5_Dashboard.py","3.3 Fintastic Sales Dashboard", " "),
-            Page("pages/DataRecommendations.py","3.5 Data Recommendations", " "),   
-            Page("pages/13_SalesBI.py","3.6 Sales Deep Dive", " "),   
-            Page("pages/14_Forecaster.py","3.7 Masekind", " "),   
-            
-            Section(name="4. Other Applications", icon=""),
-            Page("pages/8_CoolDashboard.py","4.1 Retail Dashboard", " "),
-            Page("pages/6_WebApp.py", "4.2 Web Page", " "),
-            Page("pages/4_InventoryDemand.py", "4.3 Inventry Optimisation", " "),
-            Page("pages/FantasyPredictor.py", "Fantasy Predictor", " "),
-                      
-        ]
-    )
-
     current_time  = date.today()
     # st.write(f"Welcome {name}")
     st.write(current_time)
     
-    st.title("Retail Forecasting Services")
+    st.title("21 Retail Forecasting Services")
     st.write("Welcome to our Retail Forecasting Services platform. Our goal is to provide your retail business with the tools and insights needed to thrive in a competitive market.")
  
     # About Our Services
@@ -205,10 +166,3 @@ if authentication_status:
     st.write("---")
     st.write("[Learn More >](http://www.fintasticdata.com)")
  
-
-
-
-
-
-
-
