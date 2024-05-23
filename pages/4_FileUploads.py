@@ -47,7 +47,6 @@ def get_file_size(file):
 col1, col2 = st.columns([3, 2])
 
 with col1:
-    # Create a compact grid for dataset types with additional info
     for label, key in dataset_types.items():
         with st.container():
             st.markdown(
@@ -63,41 +62,29 @@ with col1:
                 unsafe_allow_html=True,
             )
             st.write(f"**{label}**")
-            cols = st.columns([1, 2, 1, 1, 1, 1, 1])
-            
-            with cols[0]:
-                if st.session_state.uploaded_files[key] is not None:
-                    file_info = st.session_state.uploaded_files[key]
-                    st.write(file_info['file_name'])
-                    st.write(f"Session State Key: {key}")
-                else:
-                    if st.button(f"Upload {label}", key=f"upload_{key}"):
-                        # Store the fact that we are in upload mode for this key
-                        st.session_state[f"upload_mode_{key}"] = True
+            if st.session_state.uploaded_files[key] is not None:
+                file_info = st.session_state.uploaded_files[key]
+                st.write(file_info['file_name'])
+                st.write(f"Session State Key: {key}")
+            else:
+                if st.button(f"Upload {label}", key=f"upload_{key}"):
+                    # Store the fact that we are in upload mode for this key
+                    st.session_state[f"upload_mode_{key}"] = True
 
-            with cols[1]:
-                if st.session_state.uploaded_files[key] is not None:
+            if st.session_state.uploaded_files[key] is not None:
+                cols = st.columns([3, 1, 1, 1])
+                with cols[0]:
                     st.success("✔️ Uploaded")
-                else:
-                    st.write("➕ Not Uploaded")
-
-            with cols[2]:
-                if st.session_state.uploaded_files[key] is not None:
+                with cols[1]:
                     st.write(st.session_state.uploaded_files[key]['rows'])
-                else:
-                    st.write("-")
-
-            with cols[3]:
-                if st.session_state.uploaded_files[key] is not None:
+                with cols[2]:
                     st.write(f"{st.session_state.uploaded_files[key]['file_size'] / 1024:.2f} KB")
-                else:
-                    st.write("-")
-
-            with cols[4]:
-                if st.session_state.uploaded_files[key] is not None:
+                with cols[3]:
                     if st.button(f"View {label}", key=f"view_{key}"):
                         st.session_state['view_data'] = st.session_state.uploaded_files[key]['data']
                         st.session_state['view_label'] = label
+            else:
+                st.write("➕ Not Uploaded")
 
             # Handle the file uploader
             if st.session_state.get(f"upload_mode_{key}", False):
@@ -118,7 +105,6 @@ with col1:
                     st.experimental_rerun()
 
 with col2:
-    # Display the data preview if a "View Data" button is clicked
     if 'view_data' in st.session_state:
         st.write(f"### Data Preview for {st.session_state['view_label']}")
         st.dataframe(st.session_state['view_data'].head())
