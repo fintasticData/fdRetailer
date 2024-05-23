@@ -35,8 +35,6 @@ if authentication_status == None:
     st.warning("Please enter your username and password")
 
 if authentication_status:
-    
-
     show_pages(
         [
             Section(name="1. Retail ML Services", icon=""),
@@ -44,7 +42,6 @@ if authentication_status:
             Page("pages/1_2 Presentation.py", "1.2 The Situation", " "),
             Page("pages/10_Cards.py", "1.3 Services", " "),
             Page("pages/huggingface_test.py", "1.4 Huggy", " "),
-
             
             Section(name="2. The Retail Analytical Industry",  icon=""),
             # The pages appear in the order you pass them
@@ -59,21 +56,18 @@ if authentication_status:
             # Page("pages/11_DataUpload_Inventory.py","3.0 Upload Data", " "),
             Page("pages/1Logistics.py","3.2 Logistics", " "),
 
-
             Page("pages/4_Inventory Analytics.py", "3.2 Inventory Analytics", " "),
             Page("pages/5_Dashboard.py","3.3 Fintastic Sales Dashboard", " "),
             Page("pages/DataRecommendations.py","3.5 Data Recommendations", " "),   
             Page("pages/13_SalesBI.py","3.6 Sales Deep Dive", " "),   
             Page("pages/14_Forecaster.py","3.7 Masekind", " "),   
-
             
             Section(name="4. Other Applications", icon=""),
             Page("pages/8_CoolDashboard.py","4.1 Retail Dashboard", " "),
             Page("pages/6_WebApp.py", "4.2 Web Page", " "),
             Page("pages/4_InventoryDemand.py", "4.3 Inventry Optimisation", " "),
             Page("pages/FantasyPredictor.py", "Fantasy Predictor", " "),
-            
-          
+                      
         ]
     )
 
