@@ -36,53 +36,90 @@ dataset_types = {
 if 'uploaded_files' not in st.session_state:
     st.session_state.uploaded_files = {dataset: None for dataset in dataset_types.values()}
 
+# Function to get file size
+def get_file_size(file):
+    file.seek(0, 2)  # Move to the end of the file
+    size = file.tell()  # Get the current position, which is the file size
+    file.seek(0)  # Reset the file position to the beginning
+    return size
 
-
-# Add content to each column
-col1, col2 ,col3 = st.columns((30,5,65))
+# Create a two-column layout
+col1, col2 = st.columns([3, 2])
 
 with col1:
-    st.write("Add your data here to be used within the app")
-    # Add more content here
-    # Create file uploaders for each dataset type
+    # Create a compact grid for dataset types with additional info
     for label, key in dataset_types.items():
-        st.header(f"Upload Your {label}")
-        uploaded_file = st.file_uploader(f"Choose a file for {label}", type=["csv", "xlsx"], key=key)
-    
-        if uploaded_file:
-            if uploaded_file.type == "text/csv":
-                df = pd.read_csv(uploaded_file)
-            else:
-                df = pd.read_excel(uploaded_file)
+        with st.container():
+            st.markdown(
+                """
+                <style>
+                .data-row {
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
+            cols = st.columns([1, 2, 1, 1, 1, 1, 1])
+            with cols[0]:
+                st.write(f"**{label}**")
             
-            st.session_state.uploaded_files[key] = df
-    
-            # Display a preview of the uploaded data
-            st.write(f"## Data Preview for {label}")
-            st.dataframe(df.head())
-    
-            # Display a message confirming the file upload
-            st.success(f"{label} uploaded successfully!")
+            with cols[1]:
+                if st.session_state.uploaded_files[key] is not None:
+                    file_info = st.session_state.uploaded_files[key]
+                    st.write(file_info['file_name'])
+                    st.write(f"Session State Key: {key}")
+                else:
+                    if st.button(f"Upload {label}", key=f"upload_{key}"):
+                        # Store the fact that we are in upload mode for this key
+                        st.session_state[f"upload_mode_{key}"] = True
+
+            with cols[2]:
+                if st.session_state.uploaded_files[key] is not None:
+                    st.success("✔️ Uploaded")
+                else:
+                    st.write("➕ Not Uploaded")
+            
+            with cols[3]:
+                if st.session_state.uploaded_files[key] is not None:
+                    st.write(st.session_state.uploaded_files[key]['rows'])
+                else:
+                    st.write("-")
+            
+            with cols[4]:
+                if st.session_state.uploaded_files[key] is not None:
+                    st.write(f"{st.session_state.uploaded_files[key]['file_size'] / 1024:.2f} KB")
+                else:
+                    st.write("-")
+            
+            with cols[5]:
+                if st.session_state.uploaded_files[key] is not None:
+                    if st.button(f"View {label}", key=f"view_{key}"):
+                        st.session_state['view_data'] = st.session_state.uploaded_files[key]['data']
+                        st.session_state['view_label'] = label
+
+            # Handle the file uploader
+            if st.session_state.get(f"upload_mode_{key}", False):
+                uploaded_file = st.file_uploader(f"Choose a file for {label}", type=["csv", "xlsx"], key=f"file_uploader_{key}")
+                if uploaded_file is not None:
+                    if uploaded_file.type == "text/csv":
+                        df = pd.read_csv(uploaded_file)
+                    else:
+                        df = pd.read_excel(uploaded_file)
+
+                    st.session_state.uploaded_files[key] = {
+                        'file_name': uploaded_file.name,
+                        'data': df,
+                        'file_size': get_file_size(uploaded_file),
+                        'rows': len(df)
+                    }
+                    st.session_state[f"upload_mode_{key}"] = False
+                    st.experimental_rerun()
+
 with col2:
-    st.write("")
-
-with col3:
-    # st.write("Column 2")
-    # # Function to show the currently uploaded datasets
-    def show_uploaded_datasets():
-        st.header("Currently Uploaded Datasets")
-        for label, key in dataset_types.items():
-            if st.session_state.uploaded_files[key] is not None:
-                st.write(f"#### {label}")
-                st.dataframe(st.session_state.uploaded_files[key].head())
-            else:
-                st.write(f"#### {label} - No file uploaded")
-    show_uploaded_datasets()
-
-
-
-
-
-
-
-
+    # Display the data preview if a "View Data" button is clicked
+    if 'view_data' in st.session_state:
+        st.write(f"### Data Preview for {st.session_state['view_label']}")
+        st.dataframe(st.session_state['view_data'].head())
