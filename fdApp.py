@@ -3,8 +3,6 @@ from pathlib import Path
 import streamlit as st
 import pandas as pd
 from st_pages import Page, Section, add_page_title, show_pages
-import streamlit_authenticator as stauth
-# from streamlit_authenticator.utilities.hasher import Hasher
 from datetime import date
 
 
