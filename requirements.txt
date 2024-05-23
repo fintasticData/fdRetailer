@@ -3,3 +3,4 @@ pandas
 scikit-learn
 numpy
 streamlit_authenticator 
+st_pages 
