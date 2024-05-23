@@ -85,6 +85,8 @@ summary_data = []
 for label, key in dataset_types.items():
     if st.session_state.uploaded_files[key] is not None:
         file_info = st.session_state.uploaded_files[key]
+        if 'timestamp' not in file_info:
+            file_info['timestamp'] = "N/A"
         summary_data.append({
             "Dataset": label,
             "File Name": file_info['file_name'],
