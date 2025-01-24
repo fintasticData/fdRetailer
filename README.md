@@ -1,1 +1,1 @@
-###Fintastic Data Retailer App
+# Fintastic Data Retailer App
